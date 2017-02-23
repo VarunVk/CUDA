@@ -1,0 +1,45 @@
+
+   1. Near the top of "scan_largearray.cu", set #define DEFAULT_NUM_ELEMENTS
+      to 16777216. Set #define MAX_RAND to 3.  
+      Test Passed.
+  
+   2. Record the performance results when run without arguments, including the
+      host CPU and GPU processing times and the speedup.  
+        For N = 16777216, avergaed out 10 runs:- 
+        Host CPU Processing time: 229.5 (ms)
+        G80 CUDA Processing time: 63.3 (ms)
+        Speedup: 3.62X
+
+   3. Describe how you handled arrays not a power of two in size, and how you
+      minimized shared memory bank conflicts. Also describe any other
+      performance-enhancing optimizations you added.  
+      We handled the arrays by always appending zeroes, for the elements which 
+      did not exist. Therefore we always had 2*BLOCK_SIZE elements for scan.
+      Shared memory for each thread was chosen such that each thread will load 
+      elements which are one BLOCK_SIZE away.
+      We have used constant memory, to store the value which has to be added to 
+      all block elements, as this value does not change and is the same value 
+      used by all threads.
+
+   4. How do the measured FLOPS rate for the CPU and GPU kernels compare 
+      with each other, and with the theoretical performance limits of each
+      architecture? For your GPU implementation, discuss what bottlenecks 
+      your code is likely bound by, limiting higher performance.  
+
+       No of flop in GPU = (kernel for scan) + (kernel for vector addition)
+                          = [(n-1)+(n-1)] + n
+                          = 2(n-1)+n 
+
+       No of flop in CPU = n    // Ignoring the single precision overflow.
+
+                                                CPU MFLOPS       GPU MFLOPS
+        n=1000      CPU=0.011   GPU=0.098          90.9              30.6
+        n=10000         0.133       0.151          75.1             198.6
+        n=50000         0.604       0.423          82.8             354.6
+        n=500000        5.893       2.954          84.8             507.7
+        n=16000000    168.061      60.541          95.2             792.8
+        n=16777216    176.231      62.861          95.2             800.6
+
+        Bottlenecks - Constant memory will get filled up after a certain large 
+                        value of n. Thus we have to call vector_addition multiple. 
+                        I have made the changes to call it multiple times. 

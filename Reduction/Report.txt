@@ -1,0 +1,21 @@
+
+   1. How many times does your thread block synchronize to reduce its portion
+      of an array to a single value?
+
+      ceil (log2(N))
+      n - number of elements.
+
+   2. What is the minimum, maximum, and average number of "real" operations 
+      that a thread will perform? "Real" operations are those that directly 
+      contribute to the final reduction value.
+
+      Minimum - the last thread in the block- will executed 1 time. 
+      Maximum - the first thread in the block - will execute log2(N) times.
+      Average - the series is geometric progression, n/2,n/4....,1.
+                Thus the sum of "real" operations=Geometric sum of the above series.
+                which evaluates to = (n-1), this is the number of the real operations 
+                in a block. 
+                Average for the above will be, total/number of threads in the block.
+                =(n-1)/(n/2)
+
+                    

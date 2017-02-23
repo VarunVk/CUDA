@@ -1,0 +1,23 @@
+Question 
+
+   In your kernel implementation, how many threads can be simultaneously
+   scheduled for execution on a GeForce GTX 280 GPU, which contains 30
+   streaming multiprocessors? Use nvcc --ptxas-options="-v" matrixmul_kernel.cu 
+   to see the resource usage of your kernel (although compilation will fail,
+   it will only do so after compiling the kernel and displaying the relevant
+   information.)
+
+Solution 
+Output of nvcc --ptxas-options="-v" matrixmul_kernel.cu 
+ptxas info    : Compiling entry function '_Z15MatrixMulKernel6MatrixS_S_'
+for 'sm_20'
+ptxas info    : Function properties for _Z15MatrixMulKernel6MatrixS_S_
+0 bytes stack frame, 0 bytes spill stores, 0 bytes spill loads
+ptxas info    : Used 22 registers, 2048+0 bytes smem, 104 bytes cmem[0]
+
+    Number of SM in GTX280 = 30 
+    Block size in this case is 16x16=256, hence number of threads in a block
+    is 256. 
+    Thus number of blocks in a single SM = 1024/256 = 4.
+    Total number of threads running simultaneously = 30*4*256 =30720.
+

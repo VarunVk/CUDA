@@ -1,0 +1,18 @@
+===========================================================================================================================
+|    SIZE   | CPU Computaion | GPU Computation | Kernel time |  Overhead  |    FLOP    |  CPU MFLOPS    |   GPU MFLOPS    |
+===========================================================================================================================
+| 32x32     |     0.100915   |    45.089001    |  0.050000   |  45.039001 |      47432 |      470       |         948     |
+| 64x64     |     0.417000   |    45.786999    |  0.051000   |  45.736000 |     197192 |      472       |        3866     |
+| 256x256   |     6.821000   |    54.254002    |  0.084000   |  54.170002 |    3246152 |      475       |       38644     |
+| 512x512   |     27.444000  |    56.987999    |  0.330000   |  56.657997 |   13045832 |      475       |       39532     |
+| 1024x1024 |     110.12400  |    59.875999    |  0.500000   |  59.375999 |   52305992 |      475       |      104611     |
+===========================================================================================================================
+
+
+Observations:  
+1.  Dependency on the input SIZE . 
+    CPU FLOPS initially increase but saturates after the size reaches 256x256
+    GPU FLOPS keep increasing with the increase of the Matrix size.
+
+2. Overhead is significant when the size of the input is small, but when the size of the input matrix increases, 
+    the kernel execution time masks that effect. Thus the execution overhead is faded with the Kernel execution time.

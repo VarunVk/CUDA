@@ -1,0 +1,25 @@
+Questions And Answers
+
+   1. How many times is each element of the input matrices loaded during the
+      execution of the kernel?
+
+	Each element of the input matrix is loaded MATRIX_SIZE times .i.e 16
+    times in this case.
+
+   2. What is the memory-access to floating-point computation ratio in each
+      thread? Consider a multiply and addition as separate operations, and
+      ignore the storing of the result. Only global memory loads should be
+      counted towards your off-chip bandwidth.
+
+	For every iteration of the for loop in MatrixMulKernel Line 58 
+	Number of memory access = Access Matrix M + Access Matrix N
+				= 1 + 1
+				= 2 
+	Number of floating point computation = No. of Addition + No. of Multiplication
+					     = 1+1 
+	
+	Thus memory-access to floating-point computation ratio = 2/2 = 1.0 
+
+	For the entire thread,
+		memory-access to floating-point computation ratio = (2*MATRIX_SIZE) / (2*MATRIX_SIZE)
+								  = 1.0 

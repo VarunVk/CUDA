@@ -1,0 +1,8 @@
+1. Initially, started writing own AtomicInc function to support uint8 datatype. This was achieved using __byte_perm[] intinsic and by doing address & ~3 to get the previous multiple of 4 to find the word where the uint8 value is located. After doing this, we can use atomicCAS for adding. This gives us the right answer but with a huge performance hit.
+
+2. Next we wrote our own increment function using a simpler logic by taking the bin values to be of uint32. Also, the saturating logic was adde
+d here only. Even this did not give favourable performance improvements. Speedup: 0.52x
+
+3. With default atomicAdd I got speedup of 40x.
+
+4. Next we used shared memory for storing the histogram bins. With this we get Speedup:11x, therefore not using shared memory concept.
