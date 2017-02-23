@@ -1,2 +1,2 @@
 # CUDA
-CUDA programs
+CUDA programs for various Parallel algorithms. 
